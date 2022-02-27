@@ -1,0 +1,10 @@
+export default async function handler(req, res) {
+  const { id } = req.query;
+  let movie = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}&language=en-hi&append_to_response=videos`
+  );
+  movie = await movie.json();
+  res.status(200).json({
+      movie
+  })
+}
