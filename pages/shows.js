@@ -1,8 +1,12 @@
-import React from 'react'
+import Head from "next/head"
 
 const Shows = () => {
   return (
-    <div>Shows</div>
+    <>
+    <Head>
+      <title>Series</title>
+    </Head>
+    </>
   )
 }
 

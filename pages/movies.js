@@ -1,31 +1,77 @@
 import axios from "axios";
-const Movies = () => {
+import MoviesCollections from "../components/MoviesCollections";
+import { getSession } from "next-auth/react";
+import Head from "next/head";
+const Movies = ({
+  popularMovies,
+  top_ratedMovies,
+  upComingMovies,
+  trendingAll,
+}) => {
   return (
-    <section className="relative max-w-full min-h-screen w-full"></section>
+  <>
+  <Head>
+    <title>Movies</title>
+  </Head>
+    <section className="relative space-x-5 max-w-full min-h-screen w-full">
+      <MoviesCollections
+        isMovie={true}
+        results={popularMovies}
+        title="Popular Movies"
+      />
+      <MoviesCollections
+        isMovie={true}
+        results={trendingAll}
+        title="Popular Movies"
+      />
+      <MoviesCollections
+        isMovie={true}
+        results={upComingMovies}
+        title="Popular Movies"
+      />
+      <MoviesCollections
+        isMovie={true}
+        results={top_ratedMovies}
+        title="Popular Movies"
+      />
+    </section>
+  </>
   );
 };
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const [
-    popularMoviesRes,
-    popularShowsRes,
-    topRatedMoviesRes,
-    topRatedShowsRes,
-  ] = [
-    fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
-    ),
-    fetch(
-      `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
-    ),
-    fetch(
-      `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
-    ),
-    fetch(
-      `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
-    ),
-  ];
+  const [popularMoviesRes, topRatedMoviesRes, upComingRes, trendingRes] =
+    await Promise.all([
+      fetch(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
+      ),
+      fetch(
+        `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
+      ),
+      fetch(
+        `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
+      ),
+      fetch(
+        `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
+      ),
+    ]);
+  const [popularMovies, top_ratedMovies, upComingMovies, trendingAll] =
+    await Promise.all([
+      popularMoviesRes.json(),
+      topRatedMoviesRes.json(),
+      upComingRes.json(),
+      trendingRes.json(),
+    ]);
+  return {
+    props: {
+      session,
+      popularMovies: popularMovies.results,
+      top_ratedMovies: top_ratedMovies.results,
+      upComingMovies: upComingMovies.results,
+      trendingAll: trendingAll.results,
+    },
+  };
 }
 
 export default Movies;

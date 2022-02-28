@@ -8,6 +8,7 @@ import ReactPlayer from "react-player/lazy";
 import { PlusIcon, XIcon } from "@heroicons/react/solid";
 import { Rating } from "@mui/material";
 
+/**************************************************************************************** */
 const Movie = ({ movie, reviews, rating }) => {
   const router = useRouter();
   const { id } = router.query;
@@ -17,6 +18,7 @@ const Movie = ({ movie, reviews, rating }) => {
   const index = movie.videos.results.findIndex(
     (element) => element.type === "Trailer"
   );
+
   const options = {
     size: "medium",
     value: rating,
@@ -30,15 +32,16 @@ const Movie = ({ movie, reviews, rating }) => {
   const [url, setUrl] = useState(
     `https://www.youtube.com/watch?v=${movie.videos?.results[index]?.key}`
   );
+
+  
   const [isTrailer, setIsTrailer] = useState(true);
   const saveToPlaylist = async () => {
     var locaDataList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
     let history;
     if (!locaDataList) {
       history = [];
-    }
-    else{
-      history=Array.from(locaDataList)
+    } else {
+      history = Array.from(locaDataList);
     }
     let isContain = false;
     history.forEach((item) => {
@@ -118,7 +121,34 @@ const Movie = ({ movie, reviews, rating }) => {
               </span>
             </button>
 
-            <div className="rounded-full border-2 border-white flex items-center justify-center w-11 h-11 cursor-pointer bg-black/60">
+            <div
+              className="rounded-full border-2 border-white flex items-center justify-center w-11 h-11 cursor-pointer bg-black/60"
+              onClick={(e) => {
+                let saved = localStorage.getItem("NEXTFLIXVIDEOSAVED");
+                if (!saved) {
+                  saved = [
+                    {
+                      id,
+                      type: "movie",
+                    },
+                  ];
+                  localStorage.setItem(
+                    "NEXTFLIXVIDEOSAVED",
+                    JSON.stringify(saved)
+                  );
+                }
+                else{
+                  saved = JSON.parse(saved);
+                  saved = Array.from(saved).filter((item)=>{ item.id!==id&&item.type!=="movie" })
+                  saved.push({
+                    id,
+                    type:'movie'
+                  })
+                  localStorage.setItem("NEXTFLIXVIDEOSAVED",JSON.stringify(saved));
+                }
+                window.alert("Added to watch later")
+              }}
+            >
               <PlusIcon className="h-6" />
             </div>
 
@@ -170,41 +200,42 @@ const Movie = ({ movie, reviews, rating }) => {
       <section className="relative w-full h-auto max-w-full p-5 overflow-hidden flex flex-col items-center">
         <h1 className="text-lg md:text-2xl text-gray-500 ">Reviews</h1>
 
-        {Array.from(reviews.results).map((item, index) => (
-          <div
-            key={item.id}
-            className="flex shadow-sm mb-5 md:mb-10 shadow-gray-500 w-full max-w-[1020px] relative flex-col justify-center items-center p-5"
-          >
-            <h4 className="relative  py-2 max-w-full border-b px-5 mb-5 md:text-lg text-blue-400 ">
-              {item.author_details.username.toString().toUpperCase()}
-            </h4>
-            <Rating
-              size="medium"
-              value={
-                item.author_details.rating ? item.author_details.rating : 0
-              }
-              max={10}
-            />
-            <p className="relative max-w-full font-light overflow-x-hidden text-gray-300">
-              {item.content.toString().substring(0, 500)}
-              <span className="hidden" id={item.id}>
-                {item.content.toString().substring(500)}
-              </span>
-              <span
-                className="realtive text-blue-500 mx-2 cursor-pointer"
-                onClick={(e) => {
-                  var elem = document.getElementById(item.id);
-                  var elem2 = document.getElementById(item.id + index);
-                  elem2.classList.add("hidden");
-                  elem.classList.remove("hidden");
-                }}
-                id={item.id + index}
-              >
-                read more...
-              </span>
-            </p>
-          </div>
-        ))}
+        {reviews.results &&
+          Array.from(reviews.results).map((item, index) => (
+            <div
+              key={item.id}
+              className="flex shadow-sm mb-5 md:mb-10 shadow-gray-500 w-full max-w-[1020px] relative flex-col justify-center items-center p-5"
+            >
+              <h4 className="relative  py-2 max-w-full border-b px-5 mb-5 md:text-lg text-blue-400 ">
+                {item.author_details.username.toString().toUpperCase()}
+              </h4>
+              <Rating
+                size="medium"
+                value={
+                  item.author_details.rating ? item.author_details.rating : 0
+                }
+                max={10}
+              />
+              <p className="relative max-w-full font-light overflow-x-hidden text-gray-300">
+                {item.content.toString().substring(0, 500)}
+                <span className="hidden" id={item.id}>
+                  {item.content.toString().substring(500)}
+                </span>
+                <span
+                  className="realtive text-blue-500 mx-2 cursor-pointer"
+                  onClick={(e) => {
+                    var elem = document.getElementById(item.id);
+                    var elem2 = document.getElementById(item.id + index);
+                    elem2.classList.add("hidden");
+                    elem.classList.remove("hidden");
+                  }}
+                  id={item.id + index}
+                >
+                  read more...
+                </span>
+              </p>
+            </div>
+          ))}
       </section>
     </>
   ) : (

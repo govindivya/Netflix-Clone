@@ -1,4 +1,5 @@
 import { getSession, signOut, useSession } from "next-auth/react";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -11,6 +12,10 @@ const Logout = () => {
     }
   },[session,router]);
   return (
+    <>
+    <Head>
+<title>Logout</title>
+    </Head>
     <div className="login fixed top-0 left-0 p-5 w-screen min-w-full h-screen min-h-screen m-0 flex flex-col items-center justify-center">
       <div className="relative flex flex-col justify-center md:w-[40vw] items-center p-10 w-full h-auto">
         <Image
@@ -38,6 +43,7 @@ const Logout = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

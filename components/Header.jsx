@@ -50,7 +50,7 @@ function Header() {
           <SearchIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
           <span className="span">Search</span>
         </a>
-        <a className="header-link group" onClick={(e)=>router.push("/Watchlist")}>
+        <a className="header-link group" onClick={(e)=>router.push("/watchlist")}>
           <PlusIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
           <span className="span">Saved</span>
         </a>
@@ -58,7 +58,8 @@ function Header() {
           <StarIcon className="h-8 mr-4 md:h-4 md:mr-auto " />
           <span className="span">Originals</span>
         </a>
-        <a className="header-link group">
+        <a className="header-link group"
+        onClick={()=>router.push("/movies")}>
           <img
             src="/images/movie-icon.svg"
             alt=""
@@ -66,7 +67,7 @@ function Header() {
           />
           <span className="span">Movies</span>
         </a>
-        <a className="header-link group">
+        <a className="header-link group" onClick={()=>router.push("/shows")}>
           <img
             src="/images/series-icon.svg"
             alt=""

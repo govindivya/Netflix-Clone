@@ -8,10 +8,10 @@ import ReactPlayer from "react-player/lazy";
 import { PlusIcon, XIcon } from "@heroicons/react/solid";
 import { Rating } from "@mui/material";
 
-const Tv = ({ movie ,rating,reviews}) => {
-
+/************************************************************************************************/
+const Tv = ({ movie, rating, reviews }) => {
   const router = useRouter();
-  const {id}=router.query
+  const { id } = router.query;
   const BASE_URL = "https://image.tmdb.org/t/p/original/";
   const { data: session } = useSession();
   const [showPlayer, setShowPlayer] = useState(false);
@@ -22,6 +22,7 @@ const Tv = ({ movie ,rating,reviews}) => {
     precision: 1,
     max: 10,
   };
+  const alert = useAlert();
   const index = movie.videos.results.findIndex(
     (element) => element.type === "Trailer"
   );
@@ -38,9 +39,8 @@ const Tv = ({ movie ,rating,reviews}) => {
     let history;
     if (!locaDataList) {
       history = [];
-    }
-    else{
-      history=Array.from(locaDataList)
+    } else {
+      history = Array.from(locaDataList);
     }
     let isContain = false;
     history.forEach((item) => {
@@ -121,7 +121,39 @@ const Tv = ({ movie ,rating,reviews}) => {
               </span>
             </button>
 
-            <div className="rounded-full border-2 border-white flex items-center justify-center w-11 h-11 cursor-pointer bg-black/60">
+            <div
+              className="rounded-full border-2 border-white flex items-center justify-center w-11 h-11 cursor-pointer bg-black/60"
+              onClick={(e) => {
+                let saved = localStorage.getItem("NEXTFLIXVIDEOSAVED");
+                if (!saved) {
+                  saved = [
+                    {
+                      id,
+                      type: "movie",
+                    },
+                  ];
+                  localStorage.setItem(
+                    "NEXTFLIXVIDEOSAVED",
+                    JSON.stringify(saved)
+                  );
+                } else {
+                  saved = JSON.parse(saved);
+                  saved.push({
+                    id,
+                    type: "tv",
+                  });
+                  saved = Array.from(saved).filter((item) => {
+                    item.id !== id && item.type !== "movie";
+                  });
+                  localStorage.setItem(
+                    "NEXTFLIXVIDEOSAVED",
+                    JSON.stringify(saved)
+                  );
+                }
+           window.alert("Added to watch later")
+
+              }}
+            >
               <PlusIcon className="h-6" />
             </div>
 

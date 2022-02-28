@@ -18,15 +18,18 @@ export default function Home({
   top_ratedMovies,
   top_ratedShows,
   upComingMovies,
+  trendingAll,
 }) {
   const { data: session, loading } = useSession();
   const [history, setHistory] = useState([]);
-  const [similar,setSimilar]=useState([]);
+  const [similar, setSimilar] = useState(null);
+  const [similarShows, setSimilarShows] = useState(null);
+
   const [isFetched, setIsFetched] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-
   useEffect(() => {
+  
     const fetchHistory = async () => {
       var locaDataList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
       if (!locaDataList) {
@@ -41,14 +44,40 @@ export default function Home({
         let arrayOfMovie = [];
         for (let i = 1; i <= localMoviesList.length; i++) {
           let { data } = await axios.get(
-            `/api/${localMoviesList[i - 1].type}/history/${localMoviesList[i - 1].id}`
+            `/api/${localMoviesList[i - 1].type}/history/${
+              localMoviesList[i - 1].id
+            }`
           );
           arrayOfMovie.push({
             ...data.movie,
             type: `${localMoviesList[i - 1].type}`,
           });
         }
-    
+        let randomIndex = -1;
+        let randomShowindex = -1;
+        localMoviesList.forEach((item, i) => {
+          if (item.type === "movie") {
+            randomIndex = i;
+          } else {
+            randomShowindex = i;
+          }
+        });
+        if (randomIndex !== -1) {
+          const { data } = await axios.get(
+            `/api/movie/similar/${localMoviesList[randomIndex].id}`
+          );
+          if (Array.from(data).length !== 0) {
+            setSimilar(data.movies);
+          }
+        }
+        if (randomShowindex !== -1) {
+          const { data } = await axios.get(
+            `/api/tv/similar/${localMoviesList[randomIndex].id}`
+          );
+          if (Array.from(data).length !== 0) {
+            setSimilarShows(data.movies);
+          }
+        }
         setHistory([...arrayOfMovie]);
         setIsFetched(true);
       }
@@ -107,11 +136,48 @@ export default function Home({
               </div>
             </div>
           }
+           {
+            <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
+              <h2 className="font-semibold  ">Trending</h2>
+              <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
+                {
+                  trendingAll.map((item) => (
+                    <MovieThumbnail
+                      key={item.id}
+                      result={item}
+                      isMovie={item.media_type === "tv" ? false : true}
+                    />
+                  ))
+                }
+              </div>
+            </div>
+          }
+          {/* media_type */}
+          {similar !== null && (
+            <MoviesCollections
+              isMovie={true}
+              results={similar}
+              title="Based on previous movies views"
+            />
+          )}
+          {similarShows !== null && (
+            <MoviesCollections
+              isMovie={true}
+              results={similarShows}
+              title="Based on previous shows views"
+            />
+          )}
           <MoviesCollections
             isMovie={true}
             results={popularMovies}
             title="Popular Movies"
           />
+          {/* <MoviesCollections
+            isMovie={false}
+            results={trendingAll}
+            title="Trending"
+            type="none"
+          /> */}
           <MoviesCollections
             isMovie={true}
             results={upComingMovies}
@@ -146,6 +212,7 @@ export async function getServerSideProps(context) {
     topRatedMoviesRes,
     topRatedShowsRes,
     upComingRes,
+    trendingRes,
   ] = await Promise.all([
     fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
@@ -162,17 +229,25 @@ export async function getServerSideProps(context) {
     fetch(
       `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
     ),
-
-
+    fetch(
+      `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_KEY}&language=hi-Hi&page=1`
+    ),
   ]);
-  const [popularMovies, popularShows, top_ratedMovies, top_ratedShows,upComingMovies,latestMovies] =
-    await Promise.all([
-      popularMoviesRes.json(),
-      popularShowsRes.json(),
-      topRatedMoviesRes.json(),
-      topRatedShowsRes.json(),
-      upComingRes.json(),
-    ]);
+  const [
+    popularMovies,
+    popularShows,
+    top_ratedMovies,
+    top_ratedShows,
+    upComingMovies,
+    trendingAll,
+  ] = await Promise.all([
+    popularMoviesRes.json(),
+    popularShowsRes.json(),
+    topRatedMoviesRes.json(),
+    topRatedShowsRes.json(),
+    upComingRes.json(),
+    trendingRes.json(),
+  ]);
   return {
     props: {
       session,
@@ -180,7 +255,9 @@ export async function getServerSideProps(context) {
       popularShows: popularShows.results,
       top_ratedMovies: top_ratedMovies.results,
       top_ratedShows: top_ratedShows.results,
-      upComingMovies:upComingMovies.results,
+      upComingMovies: upComingMovies.results,
+      trendingAll: trendingAll.results,
     },
   };
 }
+
