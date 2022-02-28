@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       backgroundImage: (theme) => ({
         home: "url('/images/background.png')",
+        hero:"url('/images/hero-background.jpg')"
       }),
     },
     fontFamily: {

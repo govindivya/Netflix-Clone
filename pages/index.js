@@ -30,55 +30,59 @@ export default function Home({
   const { id } = router.query;
   useEffect(() => {
     const fetchHistory = async () => {
-      var locaDataList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
-      if (!locaDataList) {
-        locaDataList = [];
-        localStorage.setItem("NEXTFLIXVIDEO", JSON.stringify(locaDataList));
-        return;
-      }
-      let localMoviesList = Array.from(locaDataList);
-      if (localMoviesList.length === 0) {
-        return;
-      } else {
-        let arrayOfMovie = [];
-        for (let i = 1; i <= localMoviesList.length; i++) {
-          let { data } = await axios.get(
-            `/api/${localMoviesList[i - 1].type}/history/${
-              localMoviesList[i - 1].id
-            }`
-          );
-          arrayOfMovie.push({
-            ...data.movie,
-            type: `${localMoviesList[i - 1].type}`,
+      try {
+        var locaDataList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
+        if (!locaDataList) {
+          locaDataList = [];
+          localStorage.setItem("NEXTFLIXVIDEO", JSON.stringify(locaDataList));
+          return;
+        }
+        let localMoviesList = Array.from(locaDataList);
+        if (localMoviesList.length === 0) {
+          return;
+        } else {
+          let arrayOfMovie = [];
+          for (let i = 1; i <= localMoviesList.length; i++) {
+            let { data } = await axios.get(
+              `/api/${localMoviesList[i - 1].type}/history/${
+                localMoviesList[i - 1].id
+              }`
+            );
+            arrayOfMovie.push({
+              ...data.movie,
+              type: `${localMoviesList[i - 1].type}`,
+            });
+          }
+          let randomIndex = -1;
+          let randomShowindex = -1;
+          localMoviesList.forEach((item, i) => {
+            if (item.type === "movie") {
+              randomIndex = i;
+            } else {
+              randomShowindex = i;
+            }
           });
-        }
-        let randomIndex = -1;
-        let randomShowindex = -1;
-        localMoviesList.forEach((item, i) => {
-          if (item.type === "movie") {
-            randomIndex = i;
-          } else {
-            randomShowindex = i;
+          if (randomIndex !== -1) {
+            const { data } = await axios.get(
+              `/api/movie/similar/${localMoviesList[randomIndex].id}`
+            );
+            if (Array.from(data).length !== 0) {
+              setSimilar(data.movies);
+            }
           }
-        });
-        if (randomIndex !== -1) {
-          const { data } = await axios.get(
-            `/api/movie/similar/${localMoviesList[randomIndex].id}`
-          );
-          if (Array.from(data).length !== 0) {
-            setSimilar(data.movies);
+          if (randomShowindex !== -1) {
+            const { data } = await axios.get(
+              `/api/tv/similar/${localMoviesList[randomIndex].id}`
+            );
+            if (Array.from(data).length !== 0) {
+              setSimilarShows(data.movies);
+            }
           }
+          setHistory([...arrayOfMovie]);
+          setIsFetched(true);
         }
-        if (randomShowindex !== -1) {
-          const { data } = await axios.get(
-            `/api/tv/similar/${localMoviesList[randomIndex].id}`
-          );
-          if (Array.from(data).length !== 0) {
-            setSimilarShows(data.movies);
-          }
-        }
-        setHistory([...arrayOfMovie]);
-        setIsFetched(true);
+      } catch (error) {
+        console.log(error);
       }
     };
     fetchHistory();
@@ -108,7 +112,7 @@ export default function Home({
   }, [session]);
 
   return (
-    <div>
+    <>
       <Head>
         <title>Netflix-Clone</title>
         <meta name="description" content="" />
@@ -197,14 +201,14 @@ export default function Home({
           />
         </main>
       )}
-    </div>
+    </>
   );
 }
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const config = { headers: { "Content-Type": "application/json" } };
-  let user=null;
+  let user = null;
   try {
     const { data } = axios.post(
       "/api/user",

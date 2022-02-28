@@ -23,8 +23,6 @@ const Tv = ({ movie, rating, reviews }) => {
     precision: 1,
     max: 10,
   };
-  const [playlist,setPlayList] = useState(null);
-  const alert = useAlert();
   const index = movie.videos.results.findIndex(
     (element) => element.type === "Trailer"
   );

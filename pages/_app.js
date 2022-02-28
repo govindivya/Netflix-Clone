@@ -1,8 +1,9 @@
 import "../styles.css";
-import Header from "../components/Header";
 // pages/_app.js
 import { SessionProvider } from "next-auth/react";
 import axios from "axios";
+import  Header  from "../components/Header";
+
 /******************************************************************************* */
 axios.defaults.baseURL=process.env.BASE_URL
 export default function App({
@@ -11,7 +12,7 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
-     <Header/>
+      <Header/>
       <Component {...pageProps} />
     </SessionProvider>
   );
