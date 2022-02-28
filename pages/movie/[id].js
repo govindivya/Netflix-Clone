@@ -33,7 +33,6 @@ const Movie = ({ movie, reviews, rating }) => {
     `https://www.youtube.com/watch?v=${movie.videos?.results[index]?.key}`
   );
 
-  
   const [isTrailer, setIsTrailer] = useState(true);
   const saveToPlaylist = async () => {
     var locaDataList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
@@ -136,17 +135,21 @@ const Movie = ({ movie, reviews, rating }) => {
                     "NEXTFLIXVIDEOSAVED",
                     JSON.stringify(saved)
                   );
-                }
-                else{
+                } else {
                   saved = JSON.parse(saved);
-                  saved = Array.from(saved).filter((item)=>{ item.id!==id&&item.type!=="movie" })
+                  saved = Array.from(saved).filter((item) => {
+                    item.id !== id && item.type !== "movie";
+                  });
                   saved.push({
                     id,
-                    type:'movie'
-                  })
-                  localStorage.setItem("NEXTFLIXVIDEOSAVED",JSON.stringify(saved));
+                    type: "movie",
+                  });
+                  localStorage.setItem(
+                    "NEXTFLIXVIDEOSAVED",
+                    JSON.stringify(saved)
+                  );
                 }
-                window.alert("Added to watch later")
+                window.alert("Added to watch later");
               }}
             >
               <PlusIcon className="h-6" />
@@ -258,6 +261,8 @@ const Movie = ({ movie, reviews, rating }) => {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const { id } = context.query;
+  
+
   const [movieDetails, ReviewsData] = await Promise.all([
     fetch(
       `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}&language=en-hi&append_to_response=videos`

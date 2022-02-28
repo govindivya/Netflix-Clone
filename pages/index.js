@@ -29,7 +29,6 @@ export default function Home({
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
-  
     const fetchHistory = async () => {
       var locaDataList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
       if (!locaDataList) {
@@ -136,19 +135,17 @@ export default function Home({
               </div>
             </div>
           }
-           {
+          {
             <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
               <h2 className="font-semibold  ">Trending</h2>
               <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
-                {
-                  trendingAll.map((item) => (
-                    <MovieThumbnail
-                      key={item.id}
-                      result={item}
-                      isMovie={item.media_type === "tv" ? false : true}
-                    />
-                  ))
-                }
+                {trendingAll.map((item) => (
+                  <MovieThumbnail
+                    key={item.id}
+                    result={item}
+                    isMovie={item.media_type === "tv" ? false : true}
+                  />
+                ))}
               </div>
             </div>
           }
@@ -206,6 +203,20 @@ export default function Home({
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  const config = { headers: { "Content-Type": "application/json" } };
+ try {
+  const { data } = axios.post(
+    "http://localhost:3000/api/user",
+    {
+      name: session.user.name,
+      email: session.user.email,
+      imageUrl: session.user.image,
+    },
+    config
+  );
+ } catch (error) {
+   console.log(error.name);
+ }
   const [
     popularMoviesRes,
     popularShowsRes,
@@ -260,4 +271,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-

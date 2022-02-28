@@ -1,6 +1,6 @@
 import Head from "next/head"
 
-const search = () => {
+const Search = () => {
   return (
    <>
    <Head>
@@ -9,4 +9,4 @@ const search = () => {
   )
 }
 
-export default search
+export default Search

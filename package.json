@@ -12,9 +12,9 @@
     "@emotion/styled": "^11.8.1",
     "@heroicons/react": "^1.0.5",
     "@mui/material": "^5.4.3",
-    "@next-auth/firebase-adapter": "^0.1.2-pr.183-76202b42.8",
     "axios": "^0.26.0",
     "firebase": "^9.6.6",
+    "mongodb": "^4.4.0",
     "mongoose": "^6.2.3",
     "next": "12.0.10",
     "next-auth": "^4.2.1",
@@ -22,7 +22,6 @@
     "react-dom": "17.0.2",
     "react-player": "^2.9.0",
     "react-responsive-carousel": "^3.2.22",
-    "react-virtualized": "^9.22.3",
     "swr": "^1.2.2",
     "tailwind-scrollbar-hide": "^1.1.7"
   },

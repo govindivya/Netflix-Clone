@@ -2,6 +2,8 @@ import axios from "axios";
 import MoviesCollections from "../components/MoviesCollections";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
+
+
 const Movies = ({
   popularMovies,
   top_ratedMovies,

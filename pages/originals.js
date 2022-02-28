@@ -1,6 +1,6 @@
 import Head from "next/head"
 
-const originals = () => {
+const Originals = () => {
   return (
     <>
     <Head>
@@ -10,4 +10,4 @@ const originals = () => {
   )
 }
 
-export default originals
+export default Originals

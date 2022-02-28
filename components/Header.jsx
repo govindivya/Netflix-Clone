@@ -67,14 +67,6 @@ function Header() {
           />
           <span className="span">Movies</span>
         </a>
-        <a className="header-link group" onClick={()=>router.push("/shows")}>
-          <img
-            src="/images/series-icon.svg"
-            alt=""
-            className="h-8 mr-4 md:h-4 md:mr-auto"
-          />
-          <span className="span">Series</span>
-        </a>
       </div>
 
       {session && (

@@ -1,14 +1,15 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect ,useRef} from "react";
 
-const watchlist = () => {
+const Watchlist = () => {
   const router = useRouter();
-  var watchLater=[];
+  var watchLater=useRef(null);
   useEffect(() => {
-    watchLater = localStorage.getItem("NEXTFLIXVIDEOSAVED");
+    console.log(localStorage.getItem("NEXTFLIXVIDEOSAVED"));
+    watchLater.current = localStorage.getItem("NEXTFLIXVIDEOSAVED");
     if (!watchLater) {
-      watchLater = [];
+      watchLater.current = [];
       localStorage.setItem("NEXTFLIXVIDEOSAVED", JSON.stringify(watchLater));
     }
   }, [])
@@ -20,7 +21,7 @@ const watchlist = () => {
       </Head>
       <section className="relative space-x-5 max-w-full  w-full  min-h-[calc(100vh-72px)]">
         {
-          watchLater.length===0&&
+         (watchLater.current ===null || watchLater.current.length===0)&&
           <div className="relative w-full min-h-[calc(100vh-72px)] grid place-content-center ">
              <div className="relative flex justify-center flex-col items-center">
                <h1 className="text-3xl">NO MOVIE FOUND</h1>
@@ -35,4 +36,4 @@ const watchlist = () => {
   );
 };
 
-export default watchlist;
+export default Watchlist;
