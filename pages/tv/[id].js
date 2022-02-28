@@ -7,6 +7,7 @@ import { useState } from "react";
 import ReactPlayer from "react-player/lazy";
 import { PlusIcon, XIcon } from "@heroicons/react/solid";
 import { Rating } from "@mui/material";
+import axios from "axios";
 
 /************************************************************************************************/
 const Tv = ({ movie, rating, reviews }) => {
@@ -22,6 +23,7 @@ const Tv = ({ movie, rating, reviews }) => {
     precision: 1,
     max: 10,
   };
+  const [playlist,setPlayList] = useState(null);
   const alert = useAlert();
   const index = movie.videos.results.findIndex(
     (element) => element.type === "Trailer"

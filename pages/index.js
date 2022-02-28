@@ -204,19 +204,21 @@ export default function Home({
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const config = { headers: { "Content-Type": "application/json" } };
- try {
-  const { data } = axios.post(
-    "http://localhost:3000/api/user",
-    {
-      name: session.user.name,
-      email: session.user.email,
-      imageUrl: session.user.image,
-    },
-    config
-  );
- } catch (error) {
-   console.log(error.name);
- }
+  let user=null;
+  try {
+    const { data } = axios.post(
+      "/api/user",
+      {
+        name: session.user.name,
+        email: session.user.email,
+        imageUrl: session.user.image,
+      },
+      config
+    );
+    user = data.user;
+  } catch (error) {
+    console.log(error.name);
+  }
   const [
     popularMoviesRes,
     popularShowsRes,
@@ -262,6 +264,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
+      user,
       popularMovies: popularMovies.results,
       popularShows: popularShows.results,
       top_ratedMovies: top_ratedMovies.results,
