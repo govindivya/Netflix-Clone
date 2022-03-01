@@ -261,7 +261,6 @@ const Movie = ({ movie, reviews, rating }) => {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const { id } = context.query;
-  
 
   const [movieDetails, ReviewsData] = await Promise.all([
     fetch(
@@ -273,11 +272,19 @@ export async function getServerSideProps(context) {
   ]);
   const movie = await movieDetails.json();
   const reviews = await ReviewsData.json();
-  let totalRatings = 5;
-  Array.from(reviews.results).map((item, index) => {
-    totalRatings += Number(item.author_details.rating);
-  });
+  /********************************************/
+  let totalRatings = 0;
+  if(reviews.results){
+    try {
+      Array.from(reviews.results).map((item, index) => {
+        totalRatings += Number(item.author_details.rating);
+      });
   totalRatings /= Array.from(reviews.results).length;
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return {
     props: {
       movie,

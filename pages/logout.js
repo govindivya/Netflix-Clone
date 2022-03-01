@@ -1,6 +1,9 @@
 import { getSession, signOut,signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
+
+/********************************************************88 */
+
 const Logout = () => {
   const { data: session } = useSession();
   return (

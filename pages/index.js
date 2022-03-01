@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import MovieThumbnail from "../components/MovieThumbnail";
 import Footer from "../components/Footer";
-
+import Login from "../components/Login";
 /****************************************************************************************************/
 
 export default function Home({
@@ -21,12 +21,9 @@ export default function Home({
   upComingMovies,
   trendingAll,
 }) {
-  const { data: session, loading } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
-
-  if(!session){
-    router.push('/logout')
-  }
+  /****************************************************8 */
   const [history, setHistory] = useState([]);
   const [similar, setSimilar] = useState(null);
   const [similarShows, setSimilarShows] = useState(null);
@@ -115,7 +112,9 @@ export default function Home({
     };
     saveUser();
   }, [session]);
-
+  if(!session){
+    return <Login/>
+  }
   return (
     <>
       <Head>

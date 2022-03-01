@@ -3,24 +3,20 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MovieThumbnail from "../components/MovieThumbnail";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import Footer from "../components/Footer";
-
+import Login from "../components/Login";
 /******************************************************************************************* */
 const Search = () => {
   const [movies, setMovies] = useState(null);
   const [movieName, setMovieName] = useState("");
 
-  const { data: session, loading } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
-
-  if(!session){
-    router.push('/logout')
-  }
 
   useEffect(() => {
     setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight);
+      window.scrollTo(0, 600);
     }, 100);
   }, [movies]);
 
@@ -48,6 +44,9 @@ const Search = () => {
     } catch (error) {
       console.log(error);
     }
+  }
+  if (!session) {
+    return <Login />;
   }
   return (
     <>
@@ -94,8 +93,7 @@ const Search = () => {
           </div>
         )}
       </section>
-        <Footer/>
-
+      <Footer />
     </>
   );
 };
@@ -103,9 +101,9 @@ const Search = () => {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   return {
-    props:{
-      session
-    }
-  }
+    props: {
+      session,
+    },
+  };
 }
 export default Search;

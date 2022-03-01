@@ -1,14 +1,14 @@
-import { async } from "@firebase/util";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Footer from "../components/Footer";
+import Login from "../components/Login";
 
+/******************************************************* */
 const About = () => {
   const { data: session } = useSession();
-  const router = useRouter();
-  if (!session) {
-    router.push("/logout");
+  if(!session){
+    return <Login/>
   }
   return (
     <>
@@ -62,7 +62,7 @@ const About = () => {
         </div>
         <div className="relative w-full flex flex-col md:flex-row justify-start items-start md:justify-center md:items-center"></div>
       </section>
-      <Footer/>
+      <Footer />
     </>
   );
 };
@@ -70,10 +70,10 @@ const About = () => {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   return {
-    props:{
-      session
-    }
-  }
+    props: {
+      session,
+    },
+  };
 }
 
 export default About;

@@ -4,7 +4,6 @@ export default async function handler(req, res) {
       const { list } = req.body;
       let newList = Array.from(list);
       let moviesList=[];
-      
       for(let i=0;i<newList.length;i++){
         let item = newList[i];
         let data = await fetch(`https://api.themoviedb.org/3/${item.type}/${item.id}?api_key=${process.env.TMDB_KEY}&language=en-hi&append_to_response=videos`)

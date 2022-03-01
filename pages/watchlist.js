@@ -2,19 +2,18 @@ import axios from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import MovieThumbnail from "../components/MovieThumbnail";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Footer from "../components/Footer";
+import Login from '../components/Login'
 
+/********************************************************************************8 */
 const Watchlist = () => {
   const [watchLater, setWatchLater] = useState([]);
   const [laoding, setLoading] = useState(true);
   const { data: session, loading } = useSession();
   const router = useRouter();
 
-  if (!session) {
-    router.push("/logout");
-  }
   useEffect(() => {
     async function getMovies() {
       let watchLaterList = JSON.parse(localStorage.getItem("NEXTFLIXVIDEO"));
@@ -39,7 +38,9 @@ const Watchlist = () => {
     }
     getMovies();
   }, []);
-
+  if(!session){
+    return <Login/>
+  }
   return (
     <>
       <Head>
@@ -115,9 +116,9 @@ const Watchlist = () => {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   return {
-    props:{
-      session
-    }
-  }
+    props: {
+      session,
+    },
+  };
 }
 export default Watchlist;

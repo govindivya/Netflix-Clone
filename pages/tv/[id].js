@@ -7,7 +7,6 @@ import { useState } from "react";
 import ReactPlayer from "react-player/lazy";
 import { PlusIcon, XIcon } from "@heroicons/react/solid";
 import { Rating } from "@mui/material";
-import axios from "axios";
 
 /************************************************************************************************/
 const Tv = ({ movie, rating, reviews }) => {
@@ -150,8 +149,7 @@ const Tv = ({ movie, rating, reviews }) => {
                     JSON.stringify(saved)
                   );
                 }
-           window.alert("Added to watch later")
-
+                window.alert("Added to watch later");
               }}
             >
               <PlusIcon className="h-6" />
@@ -272,11 +270,16 @@ export async function getServerSideProps(context) {
   ]);
   const movie = await movieDetails.json();
   const reviews = await ReviewsData.json();
-  let totalRatings = 5;
-  Array.from(reviews.results).map((item, index) => {
-    totalRatings += Number(item.author_details.rating);
-  });
-  totalRatings /= Array.from(reviews.results).length;
+  let totalRatings = 0;
+  try {
+    Array.from(reviews.results).map((item, index) => {
+      totalRatings += Number(item.author_details.rating);
+    });
+    totalRatings /= Array.from(reviews.results).length;
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(movie)
   return {
     props: {
       movie,
