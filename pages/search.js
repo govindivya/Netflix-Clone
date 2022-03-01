@@ -1,12 +1,22 @@
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import MovieThumbnail from "../components/MovieThumbnail";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import Footer from "../components/Footer";
+
 /******************************************************************************************* */
 const Search = () => {
   const [movies, setMovies] = useState(null);
   const [movieName, setMovieName] = useState("");
+
+  const { data: session, loading } = useSession();
+  const router = useRouter();
+
+  if(!session){
+    router.push('/logout')
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -84,9 +94,18 @@ const Search = () => {
           </div>
         )}
       </section>
-      <Footer/>
+        <Footer/>
+
     </>
   );
 };
 
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  return {
+    props:{
+      session
+    }
+  }
+}
 export default Search;

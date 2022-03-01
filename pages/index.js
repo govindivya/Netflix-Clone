@@ -3,14 +3,14 @@ import { getSession, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./../firebase";
-import Login from "../components/Login";
 import Slider from "../components/Slider";
 import Brand from "../components/Brand";
 import MoviesCollections from "../components/MoviesCollections";
 import { useRouter } from "next/router";
 import axios from "axios";
 import MovieThumbnail from "../components/MovieThumbnail";
-import Footer from '../components/Footer'
+import Footer from "../components/Footer";
+
 /****************************************************************************************************/
 
 export default function Home({
@@ -22,12 +22,16 @@ export default function Home({
   trendingAll,
 }) {
   const { data: session, loading } = useSession();
+  const router = useRouter();
+
+  if(!session){
+    router.push('/logout')
+  }
   const [history, setHistory] = useState([]);
   const [similar, setSimilar] = useState(null);
   const [similarShows, setSimilarShows] = useState(null);
 
   const [isFetched, setIsFetched] = useState(false);
-  const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
     const fetchHistory = async () => {
@@ -119,91 +123,87 @@ export default function Home({
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {!session ? (
-        <Login />
-      ) : (
-        <main className="relative min-h-screen bg-home bg-fixed bg-center bg-cover bg-no-repeat">
-          <Slider />
-          <Brand />
-          {
-            <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
-              <h2 className="font-semibold  ">Your views</h2>
-              <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
-                {isFetched &&
-                  history.map((item) => (
-                    <MovieThumbnail
-                      key={item.id}
-                      result={item}
-                      isMovie={item.type === "movie" ? true : false}
-                    />
-                  ))}
-              </div>
-            </div>
-          }
-          {
-            <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
-              <h2 className="font-semibold  ">Trending</h2>
-              <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
-                {trendingAll.map((item) => (
+
+      <main className="relative min-h-screen bg-home bg-fixed bg-center bg-cover bg-no-repeat">
+        <Slider />
+        <Brand />
+        {
+          <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
+            <h2 className="font-semibold  ">Your views</h2>
+            <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
+              {isFetched &&
+                history.map((item) => (
                   <MovieThumbnail
                     key={item.id}
                     result={item}
-                    isMovie={item.media_type === "tv" ? false : true}
+                    isMovie={item.type === "movie" ? true : false}
                   />
                 ))}
-              </div>
             </div>
-          }
-          {/* media_type */}
-          {similar !== null && (
-            <MoviesCollections
-              isMovie={true}
-              results={similar}
-              title="Based on previous movies views"
-            />
-          )}
-          {similarShows !== null && (
-            <MoviesCollections
-              isMovie={true}
-              results={similarShows}
-              title="Based on previous shows views"
-            />
-          )}
+          </div>
+        }
+        {
+          <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
+            <h2 className="font-semibold  ">Trending</h2>
+            <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
+              {trendingAll.map((item) => (
+                <MovieThumbnail
+                  key={item.id}
+                  result={item}
+                  isMovie={item.media_type === "tv" ? false : true}
+                />
+              ))}
+            </div>
+          </div>
+        }
+        {/* media_type */}
+        {similar !== null && (
           <MoviesCollections
             isMovie={true}
-            results={popularMovies}
-            title="Popular Movies"
+            results={similar}
+            title="Based on previous movies views"
           />
-          {/* <MoviesCollections
+        )}
+        {similarShows !== null && (
+          <MoviesCollections
+            isMovie={true}
+            results={similarShows}
+            title="Based on previous shows views"
+          />
+        )}
+        <MoviesCollections
+          isMovie={true}
+          results={popularMovies}
+          title="Popular Movies"
+        />
+        {/* <MoviesCollections
             isMovie={false}
             results={trendingAll}
             title="Trending"
             type="none"
           /> */}
-          <MoviesCollections
-            isMovie={true}
-            results={upComingMovies}
-            title="Upcoming Movies"
-          />
-          <MoviesCollections
-            results={popularShows}
-            isMovie={false}
-            title="Popular Shows"
-          />
-          <MoviesCollections
-            isMovie={true}
-            results={top_ratedMovies}
-            title="Top Rated Movies"
-          />
-          <MoviesCollections
-            isMovie={false}
-            results={top_ratedShows}
-            title="Top Rated Shows"
-          />
-        </main>
-      )}
+        <MoviesCollections
+          isMovie={true}
+          results={upComingMovies}
+          title="Upcoming Movies"
+        />
+        <MoviesCollections
+          results={popularShows}
+          isMovie={false}
+          title="Popular Shows"
+        />
+        <MoviesCollections
+          isMovie={true}
+          results={top_ratedMovies}
+          title="Top Rated Movies"
+        />
+        <MoviesCollections
+          isMovie={false}
+          results={top_ratedShows}
+          title="Top Rated Shows"
+        />
+      </main>
       <Footer/>
-
     </>
   );
 }

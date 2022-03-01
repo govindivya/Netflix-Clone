@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import Facebook from "next-auth/providers/facebook";
-
 export default NextAuth({
   providers: [
     Google({
@@ -19,4 +18,5 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+ 
 });

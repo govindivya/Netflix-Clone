@@ -2,6 +2,7 @@ import axios from "axios";
 import MoviesCollections from "../components/MoviesCollections";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Footer from "../components/Footer";
 
 const Movies = ({
@@ -10,6 +11,12 @@ const Movies = ({
   upComingMovies,
   trendingAll,
 }) => {
+  const { data: session, loading } = useSession();
+  const router = useRouter();
+
+  if(!session){
+    router.push('/logout')
+  }
   return (
   <>
   <Head>
