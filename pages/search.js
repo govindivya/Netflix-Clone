@@ -10,15 +10,17 @@ import Login from "../components/Login";
 const Search = () => {
   const [movies, setMovies] = useState(null);
   const [movieName, setMovieName] = useState("");
+  const [searched,setSearched]=useState(false);
 
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    setTimeout(() => {
-      window.scrollTo(0, 600);
-    }, 100);
-  }, [movies]);
+    if(searched){
+      window.scrollTo(0,600);
+      setSearched(false);
+    }
+  }, [searched]);
 
   async function getMovie(e) {
     e.preventDefault();
@@ -41,6 +43,7 @@ const Search = () => {
         config
       );
       setMovies(data.list);
+      setSearched(true);
     } catch (error) {
       console.log(error);
     }
