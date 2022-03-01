@@ -10,6 +10,7 @@ import MoviesCollections from "../components/MoviesCollections";
 import { useRouter } from "next/router";
 import axios from "axios";
 import MovieThumbnail from "../components/MovieThumbnail";
+import Footer from '../components/Footer'
 /****************************************************************************************************/
 
 export default function Home({
@@ -201,6 +202,8 @@ export default function Home({
           />
         </main>
       )}
+      <Footer/>
+
     </>
   );
 }

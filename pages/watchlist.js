@@ -1,6 +1,7 @@
 import axios from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 import MovieThumbnail from "../components/MovieThumbnail";
 
 const Watchlist = () => {
@@ -80,6 +81,7 @@ const Watchlist = () => {
           </div>
         )}
       </section>
+      <Footer/>
     </>
   );
 };

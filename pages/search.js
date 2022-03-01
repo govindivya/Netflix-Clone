@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import MovieThumbnail from "../components/MovieThumbnail";
+import Footer from "../components/Footer";
 /******************************************************************************************* */
 const Search = () => {
   const [movies, setMovies] = useState(null);
@@ -83,6 +84,7 @@ const Search = () => {
           </div>
         )}
       </section>
+      <Footer/>
     </>
   );
 };

@@ -2,7 +2,7 @@ import axios from "axios";
 import MoviesCollections from "../components/MoviesCollections";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-
+import Footer from "../components/Footer";
 
 const Movies = ({
   popularMovies,
@@ -37,6 +37,7 @@ const Movies = ({
         title="Popular Movies"
       />
     </section>
+    <Footer/>
   </>
   );
 };
