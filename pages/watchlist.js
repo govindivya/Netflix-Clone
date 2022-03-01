@@ -1,6 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import MovieThumbnail from "../components/MovieThumbnail";
 
 const Watchlist = () => {
@@ -24,7 +24,7 @@ const Watchlist = () => {
       }
     }
     getMovies();
-  },[]);
+  }, []);
 
   return (
     <>
@@ -32,7 +32,7 @@ const Watchlist = () => {
         <title>Watchlist</title>
       </Head>
       <section className="relative space-x-5 max-w-full  w-full  min-h-[calc(100vh-72px)]">
-        {(watchLater === null ||watchLater.lenght === 0) && (
+        {(watchLater === null || watchLater.lenght === 0) && (
           <div className="relative w-full min-h-[calc(100vh-72px)] grid place-content-center ">
             <div className="relative flex justify-center flex-col items-center">
               <h1 className="text-3xl">NO MOVIE FOUND</h1>
@@ -47,18 +47,34 @@ const Watchlist = () => {
             </div>
           </div>
         )}
-        {watchLater.lenght!==0 && (
-          <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
-            <h2 className="font-semibold text-2xl pl-2 text-gray-200">
+        {watchLater.lenght !== 0 && (
+          <div className="relative flex flex-col  mx-auto overflow-y-hidden">
+            <h2 className="font-semibold text-xl px-2  mb-5 md:px-5 lg:px-10 w-full text-gray-200">
               Your watch later list
             </h2>
-            <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
+            <div className="flex relative flex-col px-2  md:px-5 lg:px-10 scrollbar-hide space-y-4 md:space-y-6   w-screen max-w-full">
               {Array.from(watchLater).map((item, index) => (
-                <MovieThumbnail
-                  key={item.id}
-                  result={item}
-                  isMovie={item.type === "movie" ? true : false}
-                />
+                <div key={item.id} className="flex h-auto justify-evenly">
+                 <div className="flex w-full justify-start">
+                 <MovieThumbnail
+                    result={item}
+                    isMovie={item.type === "movie" ? true : false}
+                  />
+                 </div>
+                  <div className="flex relative flex-col w-full justify-start items-start">
+                    <h1 component="h1" className=" text-xl text-red-500 md:text-2xl lg:text-3xl">
+                      {item.original_title ||
+                        item.title ||
+                        item.original_name ||
+                        item.title}
+                    </h1>
+                    <h3><span className="mr-2"> Release </span> {"Unknown" ||item.release_date}</h3>
+                    <h2><span className="mr-2"> Average </span> Rating {item.vote_average}</h2>
+                    <h2><span className="mr-2"> Total   </span> Ratings {item.vote_count}</h2>
+                    {item.genres.map((item,ind)=><p key={ind}>{item.name},</p>)}
+
+                  </div>
+                </div>
               ))}
             </div>
           </div>

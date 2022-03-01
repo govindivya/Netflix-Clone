@@ -63,6 +63,10 @@ function Header() {
           />
           <span className="span">Movies</span>
         </a>
+        <a className="header-link group" onClick={(e)=>router.push("/about")}>
+          <StarIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
+          <span className="span">About Us</span>
+        </a>
       </div>
 
       {session && (

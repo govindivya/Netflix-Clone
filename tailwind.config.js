@@ -9,7 +9,9 @@ module.exports = {
     extend: {
       backgroundImage: (theme) => ({
         home: "url('/images/background.png')",
-        hero:"url('/images/hero-background.jpg')"
+        hero:"url('/images/hero-background.jpg')",
+        watchlist:"url('/images/6.jpg')"
+
       }),
     },
     fontFamily: {

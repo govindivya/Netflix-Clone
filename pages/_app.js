@@ -3,6 +3,7 @@ import "../styles.css";
 import { SessionProvider } from "next-auth/react";
 import axios from "axios";
 import  Header  from "../components/Header";
+import Footer from "../components/Footer";
 
 /******************************************************************************* */
 axios.defaults.baseURL=process.env.BASE_URL
@@ -14,6 +15,7 @@ export default function App({
     <SessionProvider session={session}>
       <Header/>
       <Component {...pageProps} />
+      <Footer/>
     </SessionProvider>
   );
 }

@@ -6,7 +6,7 @@ const MovieThumbnail = ({ result, isMovie }) => {
 
   return (
     <div
-      className="flex min-w-[150px] min-h-[100px] md:min-w-[330px] md:min-h-[210px] rounded-lg overflow-hidden shadow-xl cursor-pointer border-[3px] border-[#f9f9f9] border-opacity-10  hover:border-opacity-80 hover:shadow-2xl transform hover:scale-105 transition duration-300"
+      className="flex w-[150px] min-w-[150px] min-h-[100px] md:min-w-[330px] md:min-h-[210px] rounded-lg overflow-hidden shadow-xl cursor-pointer border-[3px] border-[#f9f9f9] border-opacity-10  hover:border-opacity-80 hover:shadow-2xl transform hover:scale-105 transition duration-300"
       onClick={() => {
         isMovie === true
           ? router.push(`/movie/${result.id}`)
