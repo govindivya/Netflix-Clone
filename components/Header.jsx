@@ -42,20 +42,32 @@ function Header() {
       >
         <XIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
       </a>
-      <a className="header-link group" onClick={(e)=>router.push("/")}>
+      <a className="header-link group" onClick={(e)=>{
+        hideMenu();
+        router.push("/")
+      }}>
         <HomeIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
         <span className="span">Home</span>
       </a>
-      <a className="header-link group" onClick={(e)=>router.push("/search")}>
+      <a className="header-link group" onClick={(e)=>{
+        hideMenu()
+        router.push("/search")
+      }}>
         <SearchIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
         <span className="span">Search</span>
       </a>
-      <a className="header-link group" onClick={(e)=>router.push("/watchlist")}>
+      <a className="header-link group" onClick={(e)=>{
+        hideMenu();
+        router.push("/watchlist")
+      }}>
         <PlusIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
         <span className="span">Saved</span>
       </a>
       <a className="header-link group"
-      onClick={()=>router.push("/movies")}>
+      onClick={()=>{
+        hideMenu();
+        router.push("/movies")
+      }}>
         <img
           src="/images/movie-icon.svg"
           alt=""
@@ -63,7 +75,10 @@ function Header() {
         />
         <span className="span">Movies</span>
       </a>
-      <a className="header-link group" onClick={(e)=>router.push("/about")}>
+      <a className="header-link group" onClick={(e)=>{
+        hideMenu();
+        router.push("/about")
+      }}>
         <StarIcon className="h-8 mr-4 md:h-4 md:mr-auto" />
         <span className="span">About Us</span>
       </a>
