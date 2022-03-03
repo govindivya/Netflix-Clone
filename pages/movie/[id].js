@@ -73,6 +73,7 @@ const Movie = ({ movie, reviews, rating }) => {
             layout="fill"
             objectFit="cover"
             alt=""
+            className="opacity-50"
           />
         </div>
         <div className="absolute inset-y-28 md:inset-y-auto md:bottom-10 inset-x-4 md:inset-x-12 space-y-6 z-50">

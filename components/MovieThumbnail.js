@@ -21,7 +21,7 @@ const MovieThumbnail = ({ result, isMovie }) => {
         width={330}
         height={210}
         objectFit="cover"
-        className="rounded-lg opacity-50"
+        className="rounded-lg"
         alt=""
       />
     </div>
