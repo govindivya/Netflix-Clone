@@ -46,7 +46,7 @@ const Watchlist = () => {
       <Head>
         <title>Watchlist</title>
       </Head>
-      <section className="relative space-x-5 max-w-full   w-full  min-h-[100vh]">
+      <section className="relative  max-w-full   w-full  min-h-[100vh]">
         {watchLater.length === 0 && !laoding && (
           <div className="relative w-full bg-home min-h-[calc(100vh-72px)] grid place-content-center ">
             <div className="relative flex justify-center flex-col items-center">
