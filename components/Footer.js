@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <>
       <div
-        className="bg-cover relative bg-center"
+        className="bg-cover max-w-full overflow-x-hidden box-border relative bg-center"
         style={{
           backgroundImage:
             'url("https://image.freepik.com/free-photo/abstract-black-white-bokeh-background_1962-1324.jpg")',
@@ -171,7 +171,7 @@ const Footer = () => {
             backgroundColor: "#040714",
           }}
         >
-          <div className="container mx-auto px-6 lg:px-20 py-6">
+          <div className="container mx-auto px-2 lg:px-20 py-6">
             <div className="flex justify-center text-gray-300 mb-1">
               © 2020 &nbsp;<span className="font-bold">Govind.</span>&nbsp;2020
               All right reserved.
