@@ -21,7 +21,7 @@ const Movies = ({
   <Head>
     <title>Movies</title>
   </Head>
-    <section className="relative space-x-5 max-w-full min-h-screen w-full">
+    <section className="relative  max-w-full min-h-screen w-full">
       <MoviesCollections
         isMovie={true}
         results={popularMovies}
