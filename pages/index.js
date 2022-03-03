@@ -127,7 +127,7 @@ export default function Home({
         <Slider />
         <Brand />
         {
-          <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
+          <div className="relative flex flex-col  space-y-2 my-10 px-2 md:px-10  mx-auto overflow-y-hidden">
             <h2 className="font-semibold  ">Your views</h2>
             <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
               {isFetched &&
@@ -142,7 +142,7 @@ export default function Home({
           </div>
         }
         {
-          <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
+          <div className="relative flex flex-col  space-y-2 my-10 px-2 md:px-10  mx-auto overflow-y-hidden">
             <h2 className="font-semibold  ">Trending</h2>
             <div className="flex scrollbar-hide p-2 space-x-5 overflow-y-hidden overflow-x-scroll w-screen max-w-full">
               {trendingAll.map((item) => (
