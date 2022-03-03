@@ -80,7 +80,7 @@ const Search = () => {
           </form>
         </div>
         {movies !== null && (
-          <div className="relative flex flex-col  space-y-2 my-10 px-10  mx-auto overflow-y-hidden">
+          <div className="relative flex flex-col  space-y-2 my-10 px-2  md:px-10  mx-auto overflow-y-hidden">
             <h2 className="font-semibold text-2xl pl-2 text-gray-200">
               Some results are here
             </h2>
