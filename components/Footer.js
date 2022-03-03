@@ -148,7 +148,7 @@ const Footer = () => {
                     type="text"
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
-                    className="rounded-l text-gray-600 px-2 focus:outline-none"
+                    className="rounded-l max-w-[70vw] text-gray-600 px-2 focus:outline-none"
                   />
                   <button
                     onClick={e=>{
